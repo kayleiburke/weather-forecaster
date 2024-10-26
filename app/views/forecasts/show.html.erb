@@ -1,0 +1,25 @@
+<div class="container mt-5">
+  <h1 class="mb-4">Weather Forecaster</h1>
+
+  <form action="/forecast" method="post" class="mb-4">
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <div class="mb-3">
+      <label for="address" class="form-label">Enter Address (US and Canada only):</label>
+      <input type="text" class="form-control" id="address" name="address" placeholder="e.g., One Apple Park Way, Cupertino, CA 95014" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Get Forecast</button>
+  </form>
+
+  <% if @forecast %>
+    <div class="alert alert-info">
+      <h3>Current Weather</h3>
+      <p><strong>Location:</strong> <%= @forecast[:address] %></p>
+      <p><strong>Temperature:</strong> <%= @forecast[:temperature] %>°F</p>
+      <p><strong>Description:</strong> <%= @forecast[:description] %></p>
+    </div>
+  <% elsif @error %>
+    <div class="alert alert-danger">
+      <p><%= @error %></p>
+    </div>
+  <% end %>
+</div>
