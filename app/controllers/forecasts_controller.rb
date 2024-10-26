@@ -1,6 +1,8 @@
 class ForecastsController < ApplicationController
 
   def show
+  end
+  def create
     address = params[:address]
     geocodio = Geocodio::Gem.new(ENV["GEOCODIO_API_KEY"])
     geocode_result = geocodio.geocode([address])

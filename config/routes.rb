@@ -11,6 +11,5 @@ Rails.application.routes.draw do
 
   resource :forecast, only: [:show, :create]
 
-  # Defines the root path route ("/")
   root "forecasts#show"
 end
