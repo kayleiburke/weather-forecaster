@@ -11,5 +11,8 @@ Rails.application.routes.draw do
 
   resource :forecast, only: [:show, :create]
 
+  # Render a 404 page for unmatched routes
+  match '*unmatched', to: 'errors#not_found', via: :all
+
   root "forecasts#show"
 end
