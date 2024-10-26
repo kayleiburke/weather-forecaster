@@ -22,7 +22,8 @@ class ForecastsController < ApplicationController
     @forecast = {
       address: geocode_result['results'][0]['formatted_address'],
       temperature: forecast['main']['temp'],
-      description: forecast['weather'][0]['description']
+      description: forecast['weather'][0]['description'],
+      icon: forecast['weather'][0]['icon']
     }
 
     render :show

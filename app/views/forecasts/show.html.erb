@@ -5,20 +5,32 @@
     <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
     <div class="mb-3">
       <label for="address" class="form-label">Enter Address (US and Canada only):</label>
-      <input type="text" class="form-control" id="address" name="address" placeholder="e.g., One Apple Park Way, Cupertino, CA 95014" required>
+      <input type="text" class="form-control" id="address" name="address"
+             style="max-width: 600px"
+             placeholder="e.g., One Apple Park Way, Cupertino, CA 95014" required>
     </div>
     <button type="submit" class="btn btn-primary">Get Forecast</button>
   </form>
 
   <% if @forecast %>
-    <div class="alert alert-info">
-      <h3>Current Weather</h3>
-      <p><strong>Location:</strong> <%= @forecast[:address] %></p>
-      <p><strong>Temperature:</strong> <%= @forecast[:temperature] %>°F</p>
-      <p><strong>Description:</strong> <%= @forecast[:description] %></p>
+    <div class="card mx-left" style="max-width: 600px">
+      <div class="card-body">
+        <h3 class="card-title text-center">Current Weather</h3>
+
+        <div class="d-flex align-items-center justify-content-center my-4">
+          <img src="http://openweathermap.org/img/wn/<%= @forecast[:icon] %>@2x.png"
+               alt="<%= @forecast[:description] %>" class="me-3">
+          <div>
+            <p><strong>Location:</strong> <%= @forecast[:address] %></p>
+            <p><strong>Temperature:</strong> <%= @forecast[:temperature] %>°F</p>
+            <p><strong>Description:</strong> <%= @forecast[:description] %></p>
+          </div>
+        </div>
+      </div>
     </div>
+
   <% elsif @error %>
-    <div class="alert alert-danger">
+    <div class="alert alert-danger mx-left" style="max-width: 600px;">
       <p><%= @error %></p>
     </div>
   <% end %>
