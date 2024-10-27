@@ -56,9 +56,13 @@ A live version of the site is deployed on Heroku:
 1. **Search for Weather:**
     - On the homepage, enter an address (e.g., `One Apple Park Way, Cupertino, CA 95014`) or a more general location (e.g., `California` or `Toronto, Canada`).
     - **Note:** The address can be either specific or broad (e.g., a street address, city, or state). However, it must be within the US or Canada, as Geocodio only supports these regions.
+    ![Screenshot 2024-10-27 at 1.34.48 AM.png](..%2F..%2FDesktop%2FScreenshot%202024-10-27%20at%201.34.48%20AM.png)
     - Click **Get Forecast** to view the weather details.
+    ![Screenshot 2024-10-27 at 1.36.00 AM.png](..%2F..%2FDesktop%2FScreenshot%202024-10-27%20at%201.36.00%20AM.png)
 2. **Caching:**
     - Results are cached for 30 minutes to enhance speed and limit API requests.
     - If you search the same address within the cache period, the app will display the cached result.
+    ![Screenshot 2024-10-27 at 1.35.26 AM.png](..%2F..%2FDesktop%2FScreenshot%202024-10-27%20at%201.35.26%20AM.png)
 3. **Error Handling:**
     - If an invalid address is entered, an error message will be displayed asking the user to try again.
+    ![Screenshot 2024-10-27 at 1.37.39 AM.png](..%2F..%2FDesktop%2FScreenshot%202024-10-27%20at%201.37.39%20AM.png)
