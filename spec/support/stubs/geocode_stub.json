@@ -1,0 +1,53 @@
+{
+  "input": {
+    "address_components": {
+      "number": "1",
+      "street": "Apple Park",
+      "suffix": "Way",
+      "formatted_street": "Apple Park Way",
+      "city": "Cupertino",
+      "state": "CA",
+      "zip": "95014",
+      "country": "US"
+    },
+    "formatted_address": "1 Apple Park Way, Cupertino, CA 95014"
+  },
+  "results": [
+    {
+      "address_components": {
+        "number": "1",
+        "street": "Apple Park",
+        "suffix": "Way",
+        "formatted_street": "Apple Park Way",
+        "city": "Cupertino",
+        "county": "Santa Clara County",
+        "state": "CA",
+        "zip": "95014",
+        "country": "US"
+      },
+      "formatted_address": "1 Apple Park Way, Cupertino, CA 95014",
+      "location": { "lat": 37.334841, "lng": -122.011296 },
+      "accuracy": 1,
+      "accuracy_type": "rooftop",
+      "source": "City of Cupertino (City of Cupertino)"
+    },
+    {
+      "address_components": {
+        "number": "1",
+        "street": "Apple Park",
+        "suffix": "Way",
+        "formatted_street": "Apple Park Way",
+        "city": "Cupertino",
+        "county": "Santa Clara County",
+        "state": "CA",
+        "zip": "95014",
+        "country": "US"
+      },
+      "formatted_address": "1 Apple Park Way, Cupertino, CA 95014",
+      "location": { "lat": 37.335342, "lng": -122.009584 },
+      "accuracy": 1,
+      "accuracy_type": "rooftop",
+      "source": "Santa Clara (Santa Clara County)"
+    }
+  ]
+}
