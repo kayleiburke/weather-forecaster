@@ -62,6 +62,9 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'webmock'
   gem "rails-controller-testing"
+
+  # Use dotenv to load environment variables from .env into ENV in development
+  gem 'dotenv'
 end
 
 group :development do
