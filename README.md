@@ -16,7 +16,38 @@ A live version of the site is deployed on Heroku:
 ## 🛠️ Technologies Used
 - **Backend:** Ruby on Rails
 - **APIs:**
-    - [OpenWeather API](https://openweathermap.org/api)
-    - [Geocodio API](https://www.geocod.io/docs/#introduction)
+  - [OpenWeather API](https://openweathermap.org/api)
+  - [Geocodio API](https://www.geocod.io/docs/#introduction)
 - **Frontend:** Bootstrap CSS for styling
 - **Deployment:** Heroku
+
+## 📦 Installation
+1. **Install dependencies**
+   ```
+   bundle install
+   ```
+2. **Create API Keys**
+
+   Sign up for free accounts at:
+  - [Geocodio](https://www.geocod.io/)
+  - [OpenWeather](https://openweathermap.org/)
+
+   Generate API keys from each service after signing up.
+
+3. **Set up environment variables**
+
+   Create a .env file with the following variables:
+   ```
+   GEOCODIO_API_KEY=your_geocodio_api_key
+   OPENWEATHER_API_KEY=your_openweather_api_key
+   ```
+
+4. **Run the server**
+
+   ```
+   rails server
+   ```
+
+5. **Access the application**
+
+   Visit http://localhost:3000 in your browser.
