@@ -5,7 +5,7 @@ class ForecastsController < ApplicationController
 
   def create
     address = params[:address]
-    geocode_result = GEOCODIO_CLIENT.geocode([address])
+    geocode_result = GeocodioClient.instance.geocode([address])
 
     if geocode_result['error']
       @error = 'Invalid address. Please try again.'
@@ -17,14 +17,14 @@ class ForecastsController < ApplicationController
     lng = geocode_result['results'][0]['location']['lng']
 
     if !zip
-      geocode_result = GEOCODIO_CLIENT.reverse(["#{lat},#{lng}"], [], 1)
+      geocode_result = GeocodioClient.instance.reverse(["#{lat},#{lng}"], [], 1)
       zip = geocode_result['results'][0]['address_components']['zip']
     end
 
     from_cache = true
     forecast = Rails.cache.fetch("#{zip}_forecast", expires_in: 30.minutes) do
       from_cache = false
-      OPENWEATHER_CLIENT.current_weather(lat: lat, lon: lng, units: 'imperial')
+      OpenWeatherClient.instance.current_weather(lat: lat, lon: lng, units: 'imperial')
     end
 
     @forecast = {
