@@ -1,6 +1,6 @@
 # Weather Forecaster 🌤️
 
-Weather Forecaster is a simple web application that retrieves and displays the current weather forecast based on a provided address. Powered by OpenWeather API and Geocodio API, it provides real-time weather updates and caches results for optimized performance.
+Weather Forecaster is a simple web application that retrieves and displays the current weather forecast based on a provided address. Powered by [OpenWeather API](https://openweathermap.org/api) and [Geocodio API](https://www.geocod.io/docs/#introduction), it provides real-time weather updates and caches results for optimized performance.
 
 ## 🖥️ Live Demo
 A live version of the site is deployed on Heroku:
