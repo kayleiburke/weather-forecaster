@@ -103,7 +103,7 @@ Rails.application.configure do
   config.action_controller.perform_caching = true
   config.cache_store = :redis_cache_store, {
     url: ENV['REDISCLOUD_URL'],
-    expires_in: 1.hour
+    expires_in: 30.minutes
   }
 
 end
