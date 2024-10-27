@@ -21,7 +21,10 @@ class ForecastsController < ApplicationController
       zip = geocode_result['results'][0]['address_components']['zip']
     end
 
+    from_cache = true
+
     forecast = Rails.cache.fetch("#{zip}_forecast", expires_in: 30.minutes) do
+      from_cache = false
       weather = OpenWeather::Client.new(api_key: ENV["OPENWEATHER_API_KEY"])
       weather.current_weather(lat: lat, lon: lng, units: 'imperial')
     end
@@ -30,7 +33,8 @@ class ForecastsController < ApplicationController
       address: geocode_result['results'][0]['formatted_address'],
       temperature: forecast['main']['temp'],
       description: forecast['weather'][0]['description'],
-      icon: forecast['weather'][0]['icon']
+      icon: forecast['weather'][0]['icon'],
+      from_cache: from_cache
     }
 
     render :show
