@@ -10,6 +10,8 @@ A live version of the site is deployed on Heroku:
 ## 🚀 Features
 - **Search Weather by Address:** Enter any address (U.S. or Canada) to get the current weather details, including temperature, description, and icon
 - **Caching for Efficiency:** Forecast data is cached for 30 minutes based on zip codes to optimize performance
+  - In production, Redis-backed caching ensures consistent performance and scalability across multiple workers
+  - In development, caching is performed in-memory for simplicity
 - **Error Handling:** Handles invalid addresses gracefully with user-friendly messages
 - **User Interface with Bootstrap:** Clean and responsive design powered by Bootstrap for better user experience
 
@@ -20,6 +22,9 @@ A live version of the site is deployed on Heroku:
   - [Geocodio API](https://www.geocod.io/docs/#introduction)
 - **Frontend:** Bootstrap CSS for styling
 - **Deployment:** Heroku
+- **Cache Backend:**
+  - **Production:** Redis Cloud (Heroku Add-on) (_30MB_)
+  - **Development:** In-memory caching (_64MB_)
 
 ## 📦 Installation
 1. **Install dependencies**
