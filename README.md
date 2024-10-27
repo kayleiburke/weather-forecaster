@@ -29,8 +29,8 @@ A live version of the site is deployed on Heroku:
 2. **Create API Keys**
 
    Sign up for free accounts at:
-  - [Geocodio](https://www.geocod.io/)
-  - [OpenWeather](https://openweathermap.org/)
+   - [Geocodio](https://www.geocod.io/)
+   - [OpenWeather](https://openweathermap.org/)
 
    Generate API keys from each service after signing up.
 
