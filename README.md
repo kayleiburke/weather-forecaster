@@ -1,24 +1,22 @@
-# README
+# Weather Forecaster 🌤️
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Weather Forecaster is a simple web application that retrieves and displays the current weather forecast based on a provided address. Powered by OpenWeather API and Geocodio API, it provides real-time weather updates and caches results for optimized performance.
 
-Things you may want to cover:
+## 🖥️ Live Demo
+A live version of the site is deployed on Heroku:
 
-* Ruby version
+- https://weather-forecaster-b11670f11862.herokuapp.com/
 
-* System dependencies
+## 🚀 Features
+- **Search Weather by Address:** Enter any address to get the current weather details, including temperature, description, and icon
+- **Caching for Efficiency:** Forecast data is cached for 30 minutes based on zip codes to optimize performance
+- **Error Handling:** Handles invalid addresses gracefully with user-friendly messages
+- **User Interface with Bootstrap:** Clean and responsive design powered by Bootstrap for better user experience
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## 🛠️ Technologies Used
+- **Backend:** Ruby on Rails
+- **APIs:**
+    - [OpenWeather API](https://openweathermap.org/api)
+    - [Geocodio API](https://www.geocod.io/docs/#introduction)
+- **Frontend:** Bootstrap CSS for styling
+- **Deployment:** Heroku
