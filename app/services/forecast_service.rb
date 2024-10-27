@@ -10,7 +10,7 @@ class ForecastService
     # Handle invalid address
     return { error: 'Invalid address. Please try again.' } if geocode_result['error']
 
-    zip, lat, lng = extract_location_data(geocode_result)
+    geocode_result, zip, lat, lng = extract_location_data(geocode_result)
 
     # Fetch from cache or make a new API call
     forecast, from_cache = fetch_forecast(zip, lat, lng)
@@ -30,11 +30,11 @@ class ForecastService
     # the zip may be null if the address the user entered was very broad (ex. California),
     # so we need to reverse geocode to get the zip
     if !zip
-      reverse_result = GeocodioClient.instance.reverse(["#{lat},#{lng}"], [], 1)
-      zip = reverse_result['results'][0]['address_components']['zip']
+      geocode_result = GeocodioClient.instance.reverse(["#{lat},#{lng}"], [], 1)
+      zip = geocode_result['results'][0]['address_components']['zip']
     end
 
-    [zip, lat, lng]
+    [geocode_result, zip, lat, lng]
   end
 
   def fetch_forecast(zip, lat, lng)
