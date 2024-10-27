@@ -1,7 +1,7 @@
 <div class="container mt-5">
   <h1 class="mb-4">Weather Forecaster</h1>
 
-  <form action="/forecast" method="post" class="mb-4">
+  <form action="/forecast" method="post" class="mb-4" id="weather-form">
     <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
     <div class="mb-3">
       <label for="address" class="form-label">Enter Address (US and Canada only):</label>
@@ -9,7 +9,7 @@
              style="max-width: 600px"
              placeholder="e.g., One Apple Park Way, Cupertino, CA 95014" required>
     </div>
-    <button type="submit" class="btn btn-primary">Get Forecast</button>
+    <button type="submit" class="btn btn-primary" id="submit-btn">Get Forecast</button>
   </form>
 
   <% if @forecast %>
