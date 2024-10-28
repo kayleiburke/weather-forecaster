@@ -9,6 +9,10 @@ RSpec.describe ForecastService do
   let(:reverse_geocode_stub) { load_json_stub('reverse_geocode_stub_california.json') }
   let(:invalid_address_stub) { { 'error' => 'Invalid address' } }
 
+  let(:lat) { detailed_address_geocode_stub.dig('results', 0, 'location', 'lat') }
+  let(:lng) { detailed_address_geocode_stub.dig('results', 0, 'location', 'lng') }
+  let(:zip) { detailed_address_geocode_stub.dig('results', 0, 'address_components', 'zip') }
+
   let(:weather_stub) do
     { 'main' => { 'temp' => 75 }, 'weather' => [{ 'description' => 'clear sky', 'icon' => '01d' }] }
   end
@@ -103,21 +107,13 @@ RSpec.describe ForecastService do
       service = described_class.new(detailed_address)
       result = service.send(:extract_location_data, detailed_address_geocode_stub)
 
-      lat = detailed_address_geocode_stub.dig('results', 0, 'location', 'lat')
-      lng = detailed_address_geocode_stub.dig('results', 0, 'location', 'lng')
-      zip = detailed_address_geocode_stub.dig('results', 0, 'address_components', 'zip')
-
-      expect(result).to eq([detailed_address_geocode_stub, '95014', lat, lng])
+      expect(result).to eq([detailed_address_geocode_stub, zip, lat, lng])
     end
   end
 
   describe '#fetch_forecast' do
     it 'fetches the forecast and returns it from cache' do
       service = described_class.new(detailed_address)
-
-      lat = detailed_address_geocode_stub.dig('results', 0, 'location', 'lat')
-      lng = detailed_address_geocode_stub.dig('results', 0, 'location', 'lng')
-      zip = detailed_address_geocode_stub.dig('results', 0, 'address_components', 'zip')
 
       forecast, from_cache = service.send(:fetch_forecast, zip, lat, lng)
 
