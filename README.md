@@ -19,7 +19,7 @@ A live version of the site is deployed on Heroku:
     - In **development**, caching is performed in-memory for simplicity
 
 ## 🛠️ Technologies Used
-- **Backend:** Ruby on Rails
+- **Framework:** Ruby on Rails
 - **APIs:**
   - [OpenWeather API](https://openweathermap.org/api)
   - [Geocodio API](https://www.geocod.io/docs/#introduction)
