@@ -5,7 +5,7 @@ Weather Forecaster is a simple web application that retrieves and displays the c
 ## 🖥️ Live Demo
 A live version of the site is deployed on Heroku:
 
-- https://weather-forecaster-b11670f11862.herokuapp.com/
+- https://weather-forecaster-116cd0fccb32.herokuapp.com
 
 ## 🚀 Features
 - **Search Weather by Address:** Enter any address (U.S. or Canada) to get the current weather details, including temperature, description, and icon
