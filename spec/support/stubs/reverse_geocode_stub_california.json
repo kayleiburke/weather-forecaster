@@ -1,0 +1,25 @@
+{
+  "results": [
+    {
+      "address_components": {
+        "number": "27865",
+        "street": "Tunoi",
+        "suffix": "Pl",
+        "formatted_street": "Tunoi Pl",
+        "city": "North Fork",
+        "county": "Madera County",
+        "state": "CA",
+        "zip": "93643",
+        "country": "US"
+      },
+      "formatted_address": "27865 Tunoi Pl, North Fork, CA 93643",
+      "location": {
+        "lat": 37.155767,
+        "lng": -119.525552
+      },
+      "accuracy": 0.25,
+      "accuracy_type": "nearest_street",
+      "source": "TIGER/Line® dataset from the US Census Bureau"
+    }
+  ]
+}

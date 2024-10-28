@@ -1,0 +1,25 @@
+{
+  "input": {
+    "address_components": {
+      "state": "CA",
+      "country": "US"
+    },
+    "formatted_address": "CA"
+  },
+  "results": [
+    {
+      "address_components": {
+        "state": "CA",
+        "country": "US"
+      },
+      "formatted_address": "California",
+      "location": {
+        "lat": 37.155177,
+        "lng": -119.543418
+      },
+      "accuracy": 1,
+      "accuracy_type": "state",
+      "source": "TIGER/Line® dataset from the US Census Bureau"
+    }
+  ]
+}
