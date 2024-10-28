@@ -60,6 +60,12 @@ A live version of the site is deployed on Heroku:
 
    Visit http://localhost:3000 in your browser.
 
+## 🧪 Running Tests
+This project uses RSpec for testing. Tests can be run with the following command:
+```
+bundle exec rspec
+```
+
 ## ⚙️ Usage
 1. **Search for Weather:**
     - On the homepage, enter an address (e.g., `One Apple Park Way, Cupertino, CA 95014`) or a more general location (e.g., `California` or `Toronto, Canada`).
