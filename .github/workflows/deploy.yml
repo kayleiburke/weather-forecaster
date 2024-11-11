@@ -36,11 +36,29 @@ jobs:
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REPOSITORY:$IMAGE_TAG
 
+      - name: Create new task definition file
+        run: |
+          echo '{
+            "family": "weather-forecaster",
+            "containerDefinitions": [{
+              "name": "'"${{ secrets.CONTAINER_NAME }}"'",
+              "image": "'"${{ secrets.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}"'",
+              "essential": true,
+              "memory": 512,
+              "cpu": 256,
+              "portMappings": [
+                {
+                  "containerPort": 80,
+                  "hostPort": 80,
+                  "protocol": "tcp"
+                }
+              ]
+            }]
+          }' > new-task-def.json
+
       - name: Deploy to Amazon ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           cluster: ${{ secrets.ECS_CLUSTER }}
           service: ${{ secrets.ECS_SERVICE }}
           task-definition: new-task-def.json
-          container-name: ${{ secrets.CONTAINER_NAME }}
-          image: ${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
