@@ -1,4 +1,4 @@
-name: Deploy to AWS
+name: Deploy to ECS
 
 on:
   push:
@@ -25,44 +25,39 @@ jobs:
           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | \
           docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
 
-      - name: Build and push Docker image
+      - name: Build the Docker image
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
           ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-          IMAGE_TAG: latest
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build -t my-app .
+          docker tag my-app:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
-      - name: Create new task definition file
+      - name: Push Docker image to ECR
         run: |
-          echo '{
-            "family": "weather-forecaster",
-            "cpu": "256",
-            "memory": "512",
-            "executionRoleArn": "'"${{ secrets.ECS_TASK_EXECUTION_ROLE_ARN }}"'",
-            "containerDefinitions": [{
-              "name": "'"${{ secrets.CONTAINER_NAME }}"'",
-              "image": "'"${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}"'",
-              "essential": true,
-              "memory": 512,
-              "cpu": 256,
-              "portMappings": [
-                {
-                  "containerPort": 80,
-                  "hostPort": 80,
-                  "protocol": "tcp"
-                }
-              ]
-            }]
-          }' > new-task-def.json
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
-      - name: Deploy to Amazon ECS
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          cluster: ${{ secrets.ECS_CLUSTER }}
-          service: ${{ secrets.ECS_SERVICE }}
-          task-definition: new-task-def.json
+      - name: Register new task definition
+        run: |
+          TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition ${{ secrets.TASK_FAMILY }})
+
+          CLEAN_TASK_DEFINITION=$(echo "$TASK_DEFINITION" | \
+            jq '.taskDefinition | del(.status, .revision, .taskDefinitionArn, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)')
+
+          NEW_TASK_DEFINITION=$(echo "$CLEAN_TASK_DEFINITION" | \
+            jq '.containerDefinitions[0].image = "${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest" |
+                .containerDefinitions[0].portMappings = [{containerPort: 80, hostPort: 80}]')
+
+          echo "$NEW_TASK_DEFINITION" > new-task-def.json
+
+          aws ecs register-task-definition --cli-input-json file://new-task-def.json
+
+      - name: Update ECS service with load balancer
+        run: |
+          aws ecs update-service \
+            --cluster ${{ secrets.ECS_CLUSTER }} \
+            --service ${{ secrets.ECS_SERVICE }} \
+            --force-new-deployment
