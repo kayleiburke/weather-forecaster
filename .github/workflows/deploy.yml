@@ -41,12 +41,14 @@ jobs:
         run: |
           echo '{
             "family": "weather-forecaster",
+            "networkMode": "awsvpc",
+            "requiresCompatibilities": ["FARGATE"],
+            "cpu": "256",
+            "memory": "512",
             "containerDefinitions": [{
               "name": "'"${{ secrets.CONTAINER_NAME }}"'",
               "image": "'"${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}"'",
               "essential": true,
-              "memory": 512,
-              "cpu": 256,
               "portMappings": [
                 {
                   "containerPort": 80,
