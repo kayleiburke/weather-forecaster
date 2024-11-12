@@ -41,9 +41,9 @@ jobs:
         run: |
           echo '{
             "family": "weather-forecaster",
+            "cpu": "256",
+            "memory": "512",
             "executionRoleArn": "'"${{ secrets.ECS_TASK_EXECUTION_ROLE_ARN }}"'",
-            "requiresCompatibilities": ["FARGATE"],
-            "networkMode": "awsvpc",
             "containerDefinitions": [{
               "name": "'"${{ secrets.CONTAINER_NAME }}"'",
               "image": "'"${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}"'",
