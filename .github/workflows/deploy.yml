@@ -36,7 +36,7 @@ jobs:
           docker build \
             --build-arg GEOCODIO_API_KEY=${{ secrets.GEOCODIO_API_KEY }} \
             --build-arg OPENWEATHER_API_KEY=${{ secrets.OPENWEATHER_API_KEY }} \
-            --build-arg RAILS_SECRET_KEY_BASE=${{ secrets.RAILS_SECRET_KEY_BASE }} \
+            --build-arg SECRET_KEY_BASE=${{ secrets.RAILS_SECRET_KEY_BASE }} \
             -t my-app .
           docker tag my-app:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
 

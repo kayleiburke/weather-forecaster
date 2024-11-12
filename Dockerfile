@@ -22,12 +22,12 @@ ENV RAILS_ENV="production" \
 # Define build arguments for the API keys and Rails secret
 ARG GEOCODIO_API_KEY
 ARG OPENWEATHER_API_KEY
-ARG RAILS_SECRET_KEY_BASE
+ARG SECRET_KEY_BASE
 
 # Set environment variables for the API keys and Rails secret
 ENV GEOCODIO_API_KEY=$GEOCODIO_API_KEY \
     OPENWEATHER_API_KEY=$OPENWEATHER_API_KEY \
-    RAILS_SECRET_KEY_BASE=$RAILS_SECRET_KEY_BASE
+    SECRET_KEY_BASE=$SECRET_KEY_BASE
 
 # Throw-away build stage to reduce size of final image
 FROM base AS build
