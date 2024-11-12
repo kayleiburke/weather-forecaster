@@ -47,17 +47,23 @@ jobs:
       - name: Register new task definition
         run: |
           TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition ${{ secrets.TASK_FAMILY }})
-
+          
           CLEAN_TASK_DEFINITION=$(echo "$TASK_DEFINITION" | \
             jq '.taskDefinition | del(.status, .revision, .taskDefinitionArn, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)')
-
+          
           NEW_TASK_DEFINITION=$(echo "$CLEAN_TASK_DEFINITION" | \
             jq '.containerDefinitions[0].image = "${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest" |
-                .containerDefinitions[0].portMappings = [{containerPort: 3000, hostPort: 80}]')
-
+                .containerDefinitions[0].portMappings = [{containerPort: 3000, hostPort: 80}] |
+                .networkMode = "awsvpc" |
+                .requiresCompatibilities = ["FARGATE"] |
+                .cpu = "512" |
+                .memory = "1024"')
+          
           echo "$NEW_TASK_DEFINITION" > new-task-def.json
-
-          aws ecs register-task-definition --cli-input-json file://new-task-def.json
+          
+          # Register the new task definition and capture the ARN
+          NEW_TASK_DEF_ARN=$(aws ecs register-task-definition --cli-input-json file://new-task-def.json --query "taskDefinition.taskDefinitionArn" --output text)
+          echo "New task definition ARN: $NEW_TASK_DEF_ARN"
 
       - name: Update ECS service with load balancer
         run: |
