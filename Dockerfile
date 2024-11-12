@@ -19,13 +19,15 @@ ENV RAILS_ENV="production" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development"
 
-# Define build arguments for the API keys
+# Define build arguments for the API keys and Rails secret
 ARG GEOCODIO_API_KEY
 ARG OPENWEATHER_API_KEY
+ARG SECRET_KEY_BASE
 
-# Set environment variables for the API keys
-ENV GEOCODIO_API_KEY=$GEOCODIO_API_KEY
-ENV OPENWEATHER_API_KEY=$OPENWEATHER_API_KEY
+# Set environment variables for the API keys and Rails secret
+ENV GEOCODIO_API_KEY=$GEOCODIO_API_KEY \
+    OPENWEATHER_API_KEY=$OPENWEATHER_API_KEY \
+    SECRET_KEY_BASE=$SECRET_KEY_BASE
 
 # Throw-away build stage to reduce size of final image
 FROM base AS build
