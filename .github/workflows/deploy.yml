@@ -62,7 +62,16 @@ jobs:
           echo "$NEW_TASK_DEFINITION" > new-task-def.json
 
           # Register the new task definition and capture the ARN of the latest revision
-          NEW_TASK_DEF_ARN=$(aws ecs register-task-definition --cli-input-json file://new-task-def.json --query "taskDefinition.taskDefinitionArn" --output text)
+          NEW_TASK_DEF_ARN=$(aws ecs register-task-definition --cli-input-json file://new-task-def.json --query "taskDefinition.taskDefinitionArn" --output text 2>&1)
+          
+          # Debugging output to verify if the ARN was captured
+          echo "Task Definition Registration Output: $NEW_TASK_DEF_ARN"
+          
+          # Check if the ARN was successfully captured, exit with error if empty
+          if [[ "$NEW_TASK_DEF_ARN" == *"error"* ]] || [ -z "$NEW_TASK_DEF_ARN" ]; then
+            echo "Error: Failed to register new task definition or capture ARN."
+            exit 1
+          fi
           echo "New task definition ARN: $NEW_TASK_DEF_ARN"
 
       - name: Update ECS service with the latest task definition
