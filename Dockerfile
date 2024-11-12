@@ -1,9 +1,6 @@
 # syntax = docker/dockerfile:1
 
-# This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
-# docker build -t my-app .
-# docker run -d -p 80:80 -p 443:443 --name my-app -e RAILS_MASTER_KEY=<value from config/master.key> my-app
-
+# This Dockerfile is designed for production
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version
 ARG RUBY_VERSION=3.2.2
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
@@ -21,6 +18,14 @@ ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development"
+
+# Define build arguments for the API keys
+ARG GEOCODIO_API_KEY
+ARG OPENWEATHER_API_KEY
+
+# Set environment variables for the API keys
+ENV GEOCODIO_API_KEY=$GEOCODIO_API_KEY
+ENV OPENWEATHER_API_KEY=$OPENWEATHER_API_KEY
 
 # Throw-away build stage to reduce size of final image
 FROM base AS build
