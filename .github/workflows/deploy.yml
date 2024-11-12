@@ -53,7 +53,7 @@ jobs:
 
           NEW_TASK_DEFINITION=$(echo "$CLEAN_TASK_DEFINITION" | \
             jq '.containerDefinitions[0].image = "${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest" |
-                .containerDefinitions[0].portMappings = [{containerPort: 80, hostPort: 80}]')
+                .containerDefinitions[0].portMappings = [{containerPort: 3000, hostPort: 80}]')
 
           echo "$NEW_TASK_DEFINITION" > new-task-def.json
 
