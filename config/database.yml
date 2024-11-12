@@ -21,7 +21,11 @@ test:
   database: storage/test.sqlite3
 
 
-# Heroku does not support SQLite, so we need to use PostgreSQL
+## Heroku does not support SQLite, so we need to use PostgreSQL
+#production:
+#  <<: *default
+#  adapter: postgresql
+
 production:
   <<: *default
-  adapter: postgresql
+  database: storage/production.sqlite3
