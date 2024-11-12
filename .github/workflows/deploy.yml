@@ -45,6 +45,7 @@ jobs:
           docker push ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
 
       - name: Register new task definition
+        id: register_task
         run: |
           TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition ${{ secrets.TASK_FAMILY }})
 
@@ -62,17 +63,16 @@ jobs:
           echo "$NEW_TASK_DEFINITION" > new-task-def.json
 
           # Register the new task definition and capture the ARN of the latest revision
-          NEW_TASK_DEF_ARN=$(aws ecs register-task-definition --cli-input-json file://new-task-def.json --query "taskDefinition.taskDefinitionArn" --output text 2>&1)
-          
-          # Debugging output to verify if the ARN was captured
-          echo "Task Definition Registration Output: $NEW_TASK_DEF_ARN"
+          NEW_TASK_DEF_ARN=$(aws ecs register-task-definition --cli-input-json file://new-task-def.json --query "taskDefinition.taskDefinitionArn" --output text)
           
           # Check if the ARN was successfully captured, exit with error if empty
-          if [[ "$NEW_TASK_DEF_ARN" == *"error"* ]] || [ -z "$NEW_TASK_DEF_ARN" ]; then
+          if [[ -z "$NEW_TASK_DEF_ARN" ]]; then
             echo "Error: Failed to register new task definition or capture ARN."
             exit 1
           fi
+          
           echo "New task definition ARN: $NEW_TASK_DEF_ARN"
+          echo "::set-output name=task_definition_arn::$NEW_TASK_DEF_ARN"
 
       - name: Update ECS service with the latest task definition
         run: |
@@ -80,5 +80,5 @@ jobs:
           aws ecs update-service \
             --cluster ${{ secrets.ECS_CLUSTER }} \
             --service ${{ secrets.ECS_SERVICE }} \
-            --task-definition "$NEW_TASK_DEF_ARN" \
+            --task-definition "${{ steps.register_task.outputs.task_definition_arn }}" \
             --force-new-deployment
