@@ -81,4 +81,5 @@ jobs:
             --cluster ${{ secrets.ECS_CLUSTER }} \
             --service ${{ secrets.ECS_SERVICE }} \
             --task-definition "${{ steps.register_task.outputs.task_definition_arn }}" \
-            --force-new-deployment
+            --force-new-deployment \
+            --load-balancers targetGroupArn=${{ secrets.TARGET_GROUP_ARN }},containerName=my-app-container,containerPort=3000
