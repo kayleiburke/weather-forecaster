@@ -81,10 +81,5 @@ jobs:
             --cluster ${{ secrets.ECS_CLUSTER }} \
             --service ${{ secrets.ECS_SERVICE }} \
             --task-definition "${{ steps.register_task.outputs.task_definition_arn }}" \
-            --force-new-deployment
-
-      - name: Wait for ECS service to stabilize
-        run: |
-          aws ecs wait services-stable \
-            --cluster ${{ secrets.ECS_CLUSTER }} \
-            --services ${{ secrets.ECS_SERVICE }}
+            --force-new-deployment \
+            --load-balancers targetGroupArn=${{ secrets.TARGET_GROUP_ARN }},containerName=weather-forecaster,containerPort=3000

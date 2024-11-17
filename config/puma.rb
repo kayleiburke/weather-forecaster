@@ -20,15 +20,34 @@
 # Any libraries that use a connection pool or another resource pool should
 # be configured to provide at least as many connections as the number of
 # threads. This includes Active Record's `pool` parameter in `database.yml`.
-threads_count = ENV.fetch("RAILS_MAX_THREADS", 3)
+threads_count = ENV.fetch("RAILS_MAX_THREADS", 5)
 threads threads_count, threads_count
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 port ENV.fetch("PORT", 3000)
 
-# Allow puma to be restarted by `bin/rails restart` command.
+# Allow Puma to bind to all network interfaces (e.g., 0.0.0.0)
+bind "tcp://0.0.0.0:#{ENV.fetch('PORT', 3000)}"
+
+# Use environment variable to set the Rails environment (default is "development")
+environment ENV.fetch("RAILS_ENV", "production")
+
+# Configure worker processes (useful for multi-core servers in production)
+workers ENV.fetch("WEB_CONCURRENCY", 2).to_i
+
+# Preload the application for improved performance in multi-worker setups
+preload_app!
+
+# Allow Puma to be restarted by `bin/rails restart`
 plugin :tmp_restart
 
-# Specify the PID file. Defaults to tmp/pids/server.pid in development.
-# In other environments, only set the PID file if requested.
-pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
+# Specify the PID file
+pidfile ENV.fetch("PIDFILE", "tmp/pids/server.pid")
+
+# Actions to take before and after forking a worker process
+on_worker_boot do
+  # Re-establish database connection for ActiveRecord
+  if defined?(ActiveRecord)
+    ActiveRecord::Base.establish_connection
+  end
+end
