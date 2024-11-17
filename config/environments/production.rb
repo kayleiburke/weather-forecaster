@@ -120,8 +120,4 @@ Rails.application.configure do
     IPAddr.new("192.168.0.0/16")
   ]
 
-  config.middleware.insert_before 0, Rack::Runtime
-  config.middleware.use Rack::SSL if Rails.env.production?
-  config.middleware.insert_before ActionDispatch::Static, Rack::Deflater
-
 end
