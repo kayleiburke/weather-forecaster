@@ -37,8 +37,8 @@ jobs:
             --build-arg GEOCODIO_API_KEY=${{ secrets.GEOCODIO_API_KEY }} \
             --build-arg OPENWEATHER_API_KEY=${{ secrets.OPENWEATHER_API_KEY }} \
             --build-arg SECRET_KEY_BASE=${{ secrets.RAILS_SECRET_KEY_BASE }} \
-            -t my-app .
-          docker tag my-app:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
+            -t weather-forecaster .
+          docker tag weather-forecaster:latest ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
 
       - name: Push Docker image to ECR
         run: |
