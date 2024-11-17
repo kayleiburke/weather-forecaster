@@ -112,4 +112,16 @@ Rails.application.configure do
   # enforce HTTPS
   config.force_ssl = true
 
+  # Trust proxy headers for HTTPS handling
+  config.action_dispatch.trusted_proxies = [
+    "127.0.0.1",                # For localhost
+    IPAddr.new("10.0.0.0/8"),   # Internal IPs for AWS
+    IPAddr.new("172.16.0.0/12"),
+    IPAddr.new("192.168.0.0/16")
+  ]
+
+  config.middleware.insert_before 0, Rack::Runtime
+  config.middleware.use Rack::SSL if Rails.env.production?
+  config.middleware.insert_before ActionDispatch::Static, Rack::Deflater
+
 end
