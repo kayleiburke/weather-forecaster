@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby '3.2.2'
+ruby "3.2.2"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.2.1", ">= 7.2.1.2"
@@ -9,7 +9,7 @@ gem "sprockets-rails"
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", ">= 1.4"
 # use postgres for compatibility with heroku
-gem 'pg'
+gem "pg"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
@@ -39,18 +39,18 @@ gem "bootsnap", require: false
 # gem "image_processing", "~> 1.2"
 
 # OpenWeather API
-gem 'open-weather-ruby-client'
+gem "open-weather-ruby-client"
 
 # Geocoding API and dependencies
-gem 'faraday'
-gem 'faraday-follow_redirects'
-gem 'geocodio-gem'
+gem "faraday"
+gem "faraday-follow_redirects"
+gem "geocodio-gem"
 
-gem 'bootstrap', '~> 5.1.3'
-gem 'bootstrap-sass'
+gem "bootstrap", "~> 5.1.3"
+gem "bootstrap-sass"
 
 # Use Redis for caching
-gem 'redis'
+gem "redis"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -62,12 +62,12 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
-  gem 'rspec-rails'
-  gem 'webmock'
+  gem "rspec-rails"
+  gem "webmock"
   gem "rails-controller-testing"
 
   # Use dotenv to load environment variables from .env into ENV in development
-  gem 'dotenv'
+  gem "dotenv"
 end
 
 group :development do
