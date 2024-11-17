@@ -1,6 +1,11 @@
 require_relative "boot"
 
-require "rails/all"
+# require "rails/all"
+# Only load the frameworks needed for an app that does not use a db
+require "rails"
+require "action_controller/railtie"
+require "action_view/railtie"
+require "sprockets/railtie"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -24,8 +29,6 @@ module WeatherForecaster
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
-    # Exclude Active Record since a database is not needed.
-    config.api_only = false
     # Disable Active Record for the app:
     config.generators do |g|
       g.orm :none
