@@ -9,10 +9,10 @@ Rails.application.routes.draw do
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
-  resource :forecast, only: [:show, :create]
+  resource :forecast, only: [ :show, :create ]
 
   # Render a 404 page for unmatched routes
-  match '*unmatched', to: 'errors#not_found', via: :all
+  match "*unmatched", to: "errors#not_found", via: :all
 
   root "forecasts#show"
 end

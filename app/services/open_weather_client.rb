@@ -6,7 +6,7 @@ class OpenWeatherClient
     @client = OPENWEATHER_CLIENT
   end
 
-  def current_weather(lat:, lon:, units: 'imperial')
+  def current_weather(lat:, lon:, units: "imperial")
     @client.current_weather(lat: lat, lon: lon, units: units)
   end
 end

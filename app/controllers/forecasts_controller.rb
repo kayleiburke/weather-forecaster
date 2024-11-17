@@ -1,5 +1,4 @@
 class ForecastsController < ApplicationController
-
   def show
   end
 
@@ -15,5 +14,4 @@ class ForecastsController < ApplicationController
     @forecast = result
     render :show
   end
-
 end

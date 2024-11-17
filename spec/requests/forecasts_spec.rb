@@ -5,7 +5,7 @@ RSpec.describe "Forecasts", type: :request do
   let(:broad_address_stub) { load_json_stub('geocode_stub_california.json') }
   let(:reverse_geocode_stub) { load_json_stub('reverse_geocode_stub_california.json') }
   let(:weather_stub) do
-    { 'main' => { 'temp' => 75 }, 'weather' => [{ 'description' => 'clear sky', 'icon' => '01d' }] }
+    { 'main' => { 'temp' => 75 }, 'weather' => [ { 'description' => 'clear sky', 'icon' => '01d' } ] }
   end
 
   before do

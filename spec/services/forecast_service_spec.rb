@@ -14,7 +14,7 @@ RSpec.describe ForecastService do
   let(:zip) { detailed_address_geocode_stub.dig('results', 0, 'address_components', 'zip') }
 
   let(:weather_stub) do
-    { 'main' => { 'temp' => 75 }, 'weather' => [{ 'description' => 'clear sky', 'icon' => '01d' }] }
+    { 'main' => { 'temp' => 75 }, 'weather' => [ { 'description' => 'clear sky', 'icon' => '01d' } ] }
   end
 
   before do
@@ -68,7 +68,7 @@ RSpec.describe ForecastService do
         lat = broad_address_geocode_stub.dig('results', 0, 'location', 'lat')
         lng = broad_address_geocode_stub.dig('results', 0, 'location', 'lng')
 
-        expect(GeocodioClient.instance).to have_received(:reverse).with(["#{lat},#{lng}"], [], 1)
+        expect(GeocodioClient.instance).to have_received(:reverse).with([ "#{lat},#{lng}" ], [], 1)
       end
     end
 
@@ -107,7 +107,7 @@ RSpec.describe ForecastService do
       service = described_class.new(detailed_address)
       result = service.send(:extract_location_data, detailed_address_geocode_stub)
 
-      expect(result).to eq([detailed_address_geocode_stub, zip, lat, lng])
+      expect(result).to eq([ detailed_address_geocode_stub, zip, lat, lng ])
     end
   end
 
