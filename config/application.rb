@@ -23,5 +23,9 @@ module WeatherForecaster
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Exclude Active Record since a database is not needed.
+    config.api_only = false
+    config.active_record.database = false
   end
 end
