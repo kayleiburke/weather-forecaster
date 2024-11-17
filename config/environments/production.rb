@@ -106,4 +106,10 @@ Rails.application.configure do
     expires_in: 30.minutes
   }
 
+  # Ensure Rails trusts the AWS load balancer's forwarded headers
+  config.middleware.use ActionDispatch::HostAuthorization, ['kayleiburke.com']
+
+  # enforce HTTPS
+  config.force_ssl = true
+
 end
