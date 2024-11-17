@@ -44,7 +44,7 @@ jobs:
         run: |
           docker push ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
 
-      - name: Register new task definition
+      - name: Register new task definition with CloudWatch Logs
         id: register_task
         run: |
           TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition ${{ secrets.TASK_FAMILY }})
@@ -55,6 +55,14 @@ jobs:
           NEW_TASK_DEFINITION=$(echo "$CLEAN_TASK_DEFINITION" | \
             jq '.containerDefinitions[0].image = "${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest" |
                 .containerDefinitions[0].portMappings = [{containerPort: 3000, hostPort: 3000}] |
+                .containerDefinitions[0].logConfiguration = {
+                  "logDriver": "awslogs",
+                  "options": {
+                    "awslogs-group": "/ecs/weather-forecaster",
+                    "awslogs-region": "${{ secrets.AWS_REGION }}",
+                    "awslogs-stream-prefix": "ecs"
+                  }
+                } |
                 .networkMode = "awsvpc" |
                 .requiresCompatibilities = ["FARGATE"] |
                 .cpu = "512" |
@@ -62,24 +70,21 @@ jobs:
 
           echo "$NEW_TASK_DEFINITION" > new-task-def.json
 
-          # Register the new task definition and capture the ARN of the latest revision
           NEW_TASK_DEF_ARN=$(aws ecs register-task-definition --cli-input-json file://new-task-def.json --query "taskDefinition.taskDefinitionArn" --output text)
-          
-          # Check if the ARN was successfully captured, exit with error if empty
-          if [[ -z "$NEW_TASK_DEF_ARN" ]]; then
-            echo "Error: Failed to register new task definition or capture ARN."
-            exit 1
-          fi
-          
+
           echo "New task definition ARN: $NEW_TASK_DEF_ARN"
           echo "::set-output name=task_definition_arn::$NEW_TASK_DEF_ARN"
 
       - name: Update ECS service with the latest task definition
         run: |
-          # Update the ECS service to use the new task definition ARN
           aws ecs update-service \
             --cluster ${{ secrets.ECS_CLUSTER }} \
             --service ${{ secrets.ECS_SERVICE }} \
             --task-definition "${{ steps.register_task.outputs.task_definition_arn }}" \
-            --force-new-deployment \
-            --load-balancers targetGroupArn=${{ secrets.TARGET_GROUP_ARN }},containerName=weather-forecaster,containerPort=3000
+            --force-new-deployment
+
+      - name: Wait for ECS service to stabilize
+        run: |
+          aws ecs wait services-stable \
+            --cluster ${{ secrets.ECS_CLUSTER }} \
+            --services ${{ secrets.ECS_SERVICE }}
