@@ -26,6 +26,9 @@ module WeatherForecaster
 
     # Exclude Active Record since a database is not needed.
     config.api_only = false
-    config.active_record.database = false
+    # Disable Active Record for the app:
+    config.generators do |g|
+      g.orm :none
+    end
   end
 end
