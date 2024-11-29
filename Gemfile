@@ -46,7 +46,7 @@ gem 'faraday'
 gem 'faraday-follow_redirects'
 gem 'geocodio-gem'
 
-gem 'bootstrap', '~> 5.1.3'
+gem 'bootstrap', '~> 5.3.3'
 gem 'bootstrap-sass'
 
 # Use Redis for caching
