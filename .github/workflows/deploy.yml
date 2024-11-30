@@ -13,6 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Install AWS CLI
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -73,13 +79,13 @@ jobs:
           NEW_TASK_DEF_ARN=$(aws ecs register-task-definition --cli-input-json file://new-task-def.json --query "taskDefinition.taskDefinitionArn" --output text)
 
           echo "New task definition ARN: $NEW_TASK_DEF_ARN"
-          echo "::set-output name=task_definition_arn::$NEW_TASK_DEF_ARN"
+          echo "task_definition_arn=${NEW_TASK_DEF_ARN}" >> $GITHUB_ENV
 
       - name: Update ECS service with the latest task definition
         run: |
           aws ecs update-service \
             --cluster ${{ secrets.ECS_CLUSTER }} \
             --service ${{ secrets.ECS_SERVICE }} \
-            --task-definition "${{ steps.register_task.outputs.task_definition_arn }}" \
+            --task-definition ${{ env.task_definition_arn }} \
             --force-new-deployment \
             --load-balancers targetGroupArn=${{ secrets.TARGET_GROUP_ARN }},containerName=weather-forecaster,containerPort=3000

@@ -1,7 +1,6 @@
 # syntax = docker/dockerfile:1
 
 # This Dockerfile is designed for production
-# Make sure RUBY_VERSION matches the Ruby version in .ruby-version
 ARG RUBY_VERSION=3.2.2
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
@@ -10,7 +9,7 @@ WORKDIR /rails
 
 # Install base packages including libpq-dev and Node.js for PostgreSQL and JavaScript runtime
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 libvips sqlite3 libpq-dev nodejs && \
+    apt-get install --no-install-recommends -y curl libjemalloc2 libvips sqlite3 libpq-dev nodejs yarn && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Set production environment
