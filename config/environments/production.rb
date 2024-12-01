@@ -123,6 +123,7 @@ Rails.application.configure do
 
   config.hosts << "weather-forecaster.kayleiburke.com"
   config.hosts << "portfolio-load-balancer-1475569424.us-east-2.elb.amazonaws.com"
+  config.hosts << /172\.31\.\d+\.\d+/
   config.hosts << "localhost"
 
 end
