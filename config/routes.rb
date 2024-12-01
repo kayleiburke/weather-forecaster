@@ -11,10 +11,10 @@ Rails.application.routes.draw do
 
   resource :forecast, only: [:show, :create]
 
+  get '/health', to: proc { [200, {}, ['Healthy']] }
+
   # Render a 404 page for unmatched routes
   match '*unmatched', to: 'errors#not_found', via: :all
-
-  get '/health', to: proc { [200, {}, ['Healthy']] }
 
   root "forecasts#show"
 end
