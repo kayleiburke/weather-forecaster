@@ -54,8 +54,8 @@ jobs:
 
           NEW_TASK_DEFINITION=$(echo "$CLEAN_TASK_DEFINITION" | \
             jq '.containerDefinitions[0].image = "${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest" |
-                .containerDefinitions[0].cpu = 512 |
-                .containerDefinitions[0].memory = 1024 |
+                .containerDefinitions[0].cpu = (512 | tonumber) |
+                .containerDefinitions[0].memory = (1024 | tonumber) |
                 .containerDefinitions[0].portMappings = [{containerPort: 3000, hostPort: 3000}] |
                 .containerDefinitions[0].logConfiguration = {
                   "logDriver": "awslogs",
@@ -79,8 +79,8 @@ jobs:
                 } |
                 .networkMode = "awsvpc" |
                 .requiresCompatibilities = ["FARGATE"] |
-                .cpu = 512 |
-                .memory = 1024')
+                .cpu = (512 | tonumber) |
+                .memory = (1024 | tonumber)')
 
           echo "$NEW_TASK_DEFINITION" > new-task-def.json
 
