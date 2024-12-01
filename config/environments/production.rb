@@ -120,4 +120,6 @@ Rails.application.configure do
     IPAddr.new("192.168.0.0/16")
   ]
 
+  config.hosts << "weather-forecaster.kayleiburke.com"
+
 end
