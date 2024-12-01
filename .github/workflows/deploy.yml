@@ -48,37 +48,42 @@ jobs:
         id: register_task
         run: |
           TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition ${{ secrets.TASK_FAMILY }})
-
           CLEAN_TASK_DEFINITION=$(echo "$TASK_DEFINITION" | \
             jq '.taskDefinition | del(.status, .revision, .taskDefinitionArn, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)')
-
+          
+          # Ensure proper escaping and handling of environment variables
           NEW_TASK_DEFINITION=$(echo "$CLEAN_TASK_DEFINITION" | \
-            jq '.containerDefinitions[0].image = "${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest" |
-                .containerDefinitions[0].cpu = 512 |
-                .containerDefinitions[0].memory = 1024 |
-                .containerDefinitions[0].portMappings = [{containerPort: 3000, hostPort: 3000}] |
-                .containerDefinitions[0].logConfiguration = {
-                  "logDriver": "awslogs",
-                  "options": {
-                    "awslogs-group": "/ecs/weather-forecaster",
-                    "awslogs-region": "${{ secrets.AWS_REGION }}",
-                    "awslogs-stream-prefix": "ecs"
-                  }
-                } |
-                .containerDefinitions[0].environment = [
-                  {"name": "RAILS_MASTER_KEY", "value": "${{ secrets.RAILS_SECRET_KEY_BASE }}"},
-                  {"name": "GEOCODIO_API_KEY", "value": "${{ secrets.GEOCODIO_API_KEY }}"},
-                  {"name": "OPENWEATHER_API_KEY", "value": "${{ secrets.OPENWEATHER_API_KEY }}"}
-                ] |
-                .containerDefinitions[0].healthCheck = {
-                  "command": ["CMD-SHELL", "curl -f http://localhost:3000/health || exit 1"],
-                  "interval": 30,
-                  "timeout": 5,
-                  "retries": 3,
-                  "startPeriod": 60
-                } |
-                .networkMode = "awsvpc" |
-                .requiresCompatibilities = ["FARGATE"] )
+            jq --arg ECR_IMAGE "${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest" \
+               --arg AWS_REGION "${{ secrets.AWS_REGION }}" \
+               --arg RAILS_SECRET "${{ secrets.RAILS_SECRET_KEY_BASE }}" \
+               --arg GEOCODIO_KEY "${{ secrets.GEOCODIO_API_KEY }}" \
+               --arg OPENWEATHER_KEY "${{ secrets.OPENWEATHER_API_KEY }}" \
+            '.containerDefinitions[0].image = $ECR_IMAGE |
+             .containerDefinitions[0].cpu = 512 |
+             .containerDefinitions[0].memory = 1024 |
+             .containerDefinitions[0].portMappings = [{containerPort: 3000, hostPort: 3000}] |
+             .containerDefinitions[0].logConfiguration = {
+               "logDriver": "awslogs",
+               "options": {
+                 "awslogs-group": "/ecs/weather-forecaster",
+                 "awslogs-region": $AWS_REGION,
+                 "awslogs-stream-prefix": "ecs"
+               }
+             } |
+             .containerDefinitions[0].environment = [
+               {"name": "RAILS_MASTER_KEY", "value": $RAILS_SECRET},
+               {"name": "GEOCODIO_API_KEY", "value": $GEOCODIO_KEY},
+               {"name": "OPENWEATHER_API_KEY", "value": $OPENWEATHER_KEY}
+             ] |
+             .containerDefinitions[0].healthCheck = {
+               "command": ["CMD-SHELL", "curl -f http://localhost:3000/health || exit 1"],
+               "interval": 30,
+               "timeout": 5,
+               "retries": 3,
+               "startPeriod": 60
+             } |
+             .networkMode = "awsvpc" |
+             .requiresCompatibilities = ["FARGATE"]')
 
           echo "$NEW_TASK_DEFINITION" > new-task-def.json
 
