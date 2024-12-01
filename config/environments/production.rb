@@ -123,5 +123,6 @@ Rails.application.configure do
 
   config.hosts << "weather-forecaster.kayleiburke.com"
   config.hosts << "portfolio-load-balancer-1475569424.us-east-2.elb.amazonaws.com"
+  config.hosts << "localhost"
 
 end
