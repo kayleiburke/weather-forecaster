@@ -54,6 +54,8 @@ jobs:
 
           NEW_TASK_DEFINITION=$(echo "$CLEAN_TASK_DEFINITION" | \
             jq '.containerDefinitions[0].image = "${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest" |
+                .containerDefinitions[0].cpu = "512" |
+                .containerDefinitions[0].memory = "1024" |
                 .containerDefinitions[0].portMappings = [{containerPort: 3000, hostPort: 3000}] |
                 .containerDefinitions[0].logConfiguration = {
                   "logDriver": "awslogs",
@@ -62,6 +64,18 @@ jobs:
                     "awslogs-region": "${{ secrets.AWS_REGION }}",
                     "awslogs-stream-prefix": "ecs"
                   }
+                } |
+                .containerDefinitions[0].environment = [
+                  {"name": "RAILS_MASTER_KEY", "value": "${{ secrets.RAILS_SECRET_KEY_BASE }}"},
+                  {"name": "GEOCODIO_API_KEY", "value": "${{ secrets.GEOCODIO_API_KEY }}"},
+                  {"name": "OPENWEATHER_API_KEY", "value": "${{ secrets.OPENWEATHER_API_KEY }}"}
+                ] |
+                .containerDefinitions[0].healthCheck = {
+                  "command": ["CMD-SHELL", "curl -f http://localhost:3000/health || exit 1"],
+                  "interval": 30,
+                  "timeout": 5,
+                  "retries": 3,
+                  "startPeriod": 60
                 } |
                 .networkMode = "awsvpc" |
                 .requiresCompatibilities = ["FARGATE"] |
