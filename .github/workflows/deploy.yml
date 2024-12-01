@@ -71,7 +71,7 @@ jobs:
                }
              } |
              .containerDefinitions[0].environment = [
-               {"name": "RAILS_MASTER_KEY", "value": $RAILS_SECRET},
+               {"name": "RAILS_SECRET_KEY_BASE", "value": $RAILS_SECRET},
                {"name": "GEOCODIO_API_KEY", "value": $GEOCODIO_KEY},
                {"name": "OPENWEATHER_API_KEY", "value": $OPENWEATHER_KEY}
              ] |
