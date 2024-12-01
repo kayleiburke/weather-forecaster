@@ -79,8 +79,8 @@ jobs:
                 } |
                 .networkMode = "awsvpc" |
                 .requiresCompatibilities = ["FARGATE"] |
-                .cpu = 512 |
-                .memory = 1024')
+                .cpu = (512 | tonumber) |
+                .memory = (1024 | tonumber)')
 
           echo "$NEW_TASK_DEFINITION" > new-task-def.json
 
