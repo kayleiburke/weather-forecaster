@@ -78,9 +78,7 @@ jobs:
                   "startPeriod": 60
                 } |
                 .networkMode = "awsvpc" |
-                .requiresCompatibilities = ["FARGATE"] |
-                .cpu = 512 |
-                .memory = 1024')
+                .requiresCompatibilities = ["FARGATE"] )
 
           echo "$NEW_TASK_DEFINITION" > new-task-def.json
 
