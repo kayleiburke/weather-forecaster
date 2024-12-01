@@ -106,9 +106,6 @@ Rails.application.configure do
     expires_in: 30.minutes
   }
 
-  # Ensure Rails trusts the AWS load balancer's forwarded headers
-  config.middleware.use ActionDispatch::HostAuthorization, ['kayleiburke.com']
-
   # enforce HTTPS
   config.force_ssl = true
 
@@ -123,7 +120,7 @@ Rails.application.configure do
 
   config.hosts << "weather-forecaster.kayleiburke.com"
   config.hosts << "portfolio-load-balancer-1475569424.us-east-2.elb.amazonaws.com"
-  config.hosts << /172\.31\.\d+\.\d+/
+  config.hosts << IPAddr.new("172.31.0.0/16")
   config.hosts << "localhost"
 
 end
